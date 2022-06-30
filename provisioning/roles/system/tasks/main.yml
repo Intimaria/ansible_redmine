@@ -1,4 +1,4 @@
-- name: Apt update 
+- name: Apt Update 
   apt:
     upgrade: yes
     update_cache: yes

@@ -1,13 +1,15 @@
 - name: Create Group 
   group:
-    name: redmine
+    name: "{{ group_name }}"
 
 - name: Create User
   user:
-    name: redmine
+    name: "{{ user_name }}"
     create_home: true
-    groups: redmine
+    groups: "{{ group_name }}"
     comment: 'Redmine Management Account'
     expires: -1
     state: present 
     shell: /bin/bash
+    password:  "{{ user_password | password_hash('sha512') }}"
+    update_password: on_create
