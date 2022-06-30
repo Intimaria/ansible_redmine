@@ -1,0 +1,38 @@
+---
+- name: Install Redmine
+  hosts: all
+  become: true
+  
+
+  tasks:
+    - name: Apt update 
+      apt:
+        upgrade: yes
+        update_cache: yes
+        cache_valid_time: 3600  
+
+    - name: Apt install dependencies 
+      register: updatesys
+      apt:
+        name:
+          - apache2
+          - ruby
+          - ruby-dev
+          - build-essential
+          - libapache2-mod-passenger
+          - libmysqlclient-dev
+        state: present
+
+    - name: Create Group 
+      group:
+        name: redmine
+
+    - name: Create User
+      user:
+        name: redmine
+        create_home: true
+        groups: redmine
+        comment: 'Redmine Management Account'
+        expires: -1
+        state: present 
+        shell: /bin/bash
