@@ -1,0 +1,13 @@
+- name: Create Group 
+  group:
+    name: redmine
+
+- name: Create User
+  user:
+    name: redmine
+    create_home: true
+    groups: redmine
+    comment: 'Redmine Management Account'
+    expires: -1
+    state: present 
+    shell: /bin/bash

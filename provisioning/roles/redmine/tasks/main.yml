@@ -1,0 +1,9 @@
+
+- name: Apt Install Redmine Dependencies 
+  register: updatesys
+  apt:
+    name:
+      - apache2
+      - libapache2-mod-passenger
+      - libmysqlclient-dev
+    state: present
