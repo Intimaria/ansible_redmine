@@ -6,7 +6,6 @@
     - system
     - user
     - rbenv
-    - db
     - redmine
-
+    - db
     
