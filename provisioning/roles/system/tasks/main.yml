@@ -15,6 +15,7 @@
       - libmysqlclient-dev
       - mysql-server
       - python3-mysqldb
+      - acl
     state: present
 
 - name: Reboot system

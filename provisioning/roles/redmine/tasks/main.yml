@@ -6,7 +6,7 @@
     remote_src: yes
   
 - name: Make Symlink to Redmine 
-  ansible.builtin.file:
+  file:
     src: "/opt/{{ redmine.file }}"
     dest: /opt/redmine
     state: link

@@ -9,10 +9,18 @@
   mysql_db:
     name: redmine 
     state: present
-    
-- name: Crete Redmine User
+
+- name: Crete Redmine DB User
   mysql_user:
     name: "{{ user_name }}"
     password: "{{ user_password }}"
     priv: 'redmine.*:ALL,GRANT'
     state: present
+
+
+- name: Copy DB Config File
+  copy:
+    src: templates/database.yml.j2
+    dest: /opt/redmine/config/database.yml
+    owner: "{{ user_name }}"
+    group: "{{ group_name }}"
