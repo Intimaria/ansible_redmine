@@ -16,11 +16,3 @@
     password: "{{ user_password }}"
     priv: 'redmine.*:ALL,GRANT'
     state: present
-
-
-- name: Copy DB Config File
-  copy:
-    src: templates/database.yml.j2
-    dest: /opt/redmine/config/database.yml
-    owner: "{{ user_name }}"
-    group: "{{ group_name }}"

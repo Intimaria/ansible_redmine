@@ -7,7 +7,6 @@
 
 - name: Apt Install Redmine Dependencies 
   register: updatesys
-  become: yes
   apt:
     name:
       - apache2
@@ -18,7 +17,27 @@
       - acl
     state: present
 
+- name: Apt install Rbenv Dependencies 
+  register: updatesys
+  apt:
+    name: 
+      - git
+      - curl
+      - libssl-dev
+      - libreadline-dev
+      - zlib1g-dev
+      - autoconf
+      - bison
+      - build-essential
+      - libyaml-dev
+      - libncurses5-dev
+      - libffi-dev
+      - libgdbm-dev
+      - libreadline6-dev 
+      - zlib1g-dev 
+
 - name: Reboot system
   become: yes 
   reboot:
   when: task_result is changed
+

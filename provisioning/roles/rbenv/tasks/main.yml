@@ -1,59 +1,38 @@
-- name: Apt install Rbenv Dependencies 
-  register: updatesys
-  apt:
-    name: 
-      - git
-      - curl
-      - libssl-dev
-      - libreadline-dev
-      - zlib1g-dev
-      - autoconf
-      - bison
-      - build-essential
-      - libyaml-dev
-      - libncurses5-dev
-      - libffi-dev
-      - libgdbm-dev
-      - libreadline6-dev 
-      - zlib1g-dev 
-
 - name: Download Rbenv
-  become: yes
-  become_user: redmine
-  become_method: sudo
   git: 
     repo: https://github.com/sstephenson/rbenv.git
     dest: "/home/{{ user_name }}/.rbenv"
     version: v1.2.0
 
 - name: Download Ruby-Build
-  become: yes
-  become_user: redmine
-  become_method: sudo
   git: 
     repo: https://github.com/rbenv/ruby-build.git
     dest: "/home/{{ user_name }}/.rbenv/plugins/ruby-build"
 
 - name: Export Rbenv to PATH
-  become: yes
-  become_user: redmine
-  become_method: sudo
   lineinfile: 
     dest: "/home/{{ user_name}}/.bashrc" 
     line: "export PATH=\"$HOME/.rbenv/bin:$PATH\""
 
 - name: Edit .bashrc
-  become: yes
-  become_user: redmine
-  become_method: sudo
   lineinfile: 
     dest: "/home/{{ user_name}}/.bashrc"
     line: "eval \"$(rbenv init -)\""
 
+- name: Check Installed Ruby 
+  shell: "/home/{{ user_name }}/.rbenv/bin/rbenv versions | grep {{ rbenv.default_ruby }}"
+  register: ruby_installed
+  ignore_errors: true
 
 - name: Install Ruby
-  become: yes
-  become_user: redmine
-  become_method: sudo
   shell: "/home/{{ user_name }}/.rbenv/bin/rbenv install {{ rbenv.default_ruby }} -k"
+  when: "ruby_installed.rc == 1"
+
+- name: Global Ruby Version
+  shell: "/home/{{ user_name }}/.rbenv/bin/rbenv global {{ rbenv.default_ruby }}"
   ignore_errors: yes
+
+- name: Install Bundler                                                                                                                      
+  become_user: "{{ user_name }}"                                                                                                         
+  gem:                                                                                                                                                  
+    name: bundler                                                                                                                              

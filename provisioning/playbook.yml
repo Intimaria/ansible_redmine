@@ -1,11 +1,19 @@
 ---
-- name: Install Redmine
+- name: Setup System
   hosts: all
   become: true
   roles: 
     - system
     - user
+    - db
+
+- name: Install Redmine
+  vars:
+    user_name: redmine
+  hosts: all
+  become: yes
+  become_user: "{{ user_name }}"
+  become_method: sudo
+  roles: 
     - rbenv
     - redmine
-    - db
-    

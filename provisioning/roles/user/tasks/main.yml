@@ -11,8 +11,8 @@
     expires: -1
     state: present 
     shell: /bin/bash
-#    password:  "{{ user_password | password_hash('sha512') }}"
-#    update_password: on_create
+    password:  "{{ user_password | password_hash('sha512') }}"
+    update_password: on_create
 
 - name: Install SSH Key
   authorized_key:
