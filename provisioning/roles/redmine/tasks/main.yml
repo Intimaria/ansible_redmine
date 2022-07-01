@@ -1,9 +1,17 @@
+- name:  Download Resource and Untar File 
+  become: yes 
+  unarchive: 
+    src: "{{ redmine.url }}"
+    dest: "/opt"
+    remote_src: yes
+  
+- name: Make Symlink to Redmine 
+  ansible.builtin.file:
+    src: "/opt/{{ redmine.file }}"
+    dest: /opt/redmine
+    state: link
 
-- name: Apt Install Redmine Dependencies 
-  register: updatesys
-  apt:
-    name:
-      - apache2
-      - libapache2-mod-passenger
-      - libmysqlclient-dev
-    state: present
+- name: Delete Tarfile
+  file:
+    state: absent
+    path: "/opt/{{ redmine.dest }}"

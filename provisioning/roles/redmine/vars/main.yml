@@ -1,0 +1,4 @@
+redmine:
+  url: https://redmine.org/releases/redmine-5.0.1.tar.gz
+  dest: redmine-5.0.1.tar.gz
+  file: redmine-5.0.1

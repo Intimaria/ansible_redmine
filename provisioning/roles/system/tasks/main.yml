@@ -2,4 +2,22 @@
   apt:
     upgrade: yes
     update_cache: yes
-    cache_valid_time: 3600  
+    cache_valid_time: 3600 
+  register: task_result
+
+- name: Apt Install Redmine Dependencies 
+  register: updatesys
+  become: yes
+  apt:
+    name:
+      - apache2
+      - libapache2-mod-passenger
+      - libmysqlclient-dev
+      - mysql-server
+      - python3-mysqldb
+    state: present
+
+- name: Reboot system
+  become: yes 
+  reboot:
+  when: task_result is changed
