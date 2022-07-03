@@ -1,23 +1,39 @@
+- name: Check If Rbenv Installed
+  stat: 
+    path: "/home/{{ user_name }}/.rbenv"
+  register: rbenv_installed 
+  ignore_errors: yes
+
 - name: Download Rbenv
   git: 
     repo: https://github.com/sstephenson/rbenv.git
     dest: "/home/{{ user_name }}/.rbenv"
     version: v1.2.0
+  when: not rbenv_installed
+
+- name: Check If Ruby-Build Installed
+  stat: 
+    path: "/home/{{ user_name }}/.rbenv/plugins/ruby-build"
+  register: rbuild_installed 
+  ignore_errors: yes
 
 - name: Download Ruby-Build
   git: 
     repo: https://github.com/rbenv/ruby-build.git
     dest: "/home/{{ user_name }}/.rbenv/plugins/ruby-build"
+  when: not rbuild_installed
 
 - name: Export Rbenv to PATH
   lineinfile: 
     dest: "/home/{{ user_name}}/.bashrc" 
     line: "export PATH=\"$HOME/.rbenv/bin:$PATH\""
+  when: not rbenv_installed
 
 - name: Edit .bashrc
   lineinfile: 
     dest: "/home/{{ user_name}}/.bashrc"
     line: "eval \"$(rbenv init -)\""
+  when: not rbenv_installed
 
 - name: Check Installed Ruby 
   shell: "/home/{{ user_name }}/.rbenv/bin/rbenv versions | grep {{ rbenv.default_ruby }}"
@@ -31,8 +47,10 @@
 - name: Global Ruby Version
   shell: "/home/{{ user_name }}/.rbenv/bin/rbenv global {{ rbenv.default_ruby }}"
   ignore_errors: yes
-
-- name: Install Bundler                                                                                                                      
-  become_user: "{{ user_name }}"                                                                                                         
+       
+- name: Install Bundler                                                                                                                                                                                                               
   gem:                                                                                                                                                  
-    name: bundler                                                                                                                              
+    name: bundler
+
+
+                                                                                                                 -

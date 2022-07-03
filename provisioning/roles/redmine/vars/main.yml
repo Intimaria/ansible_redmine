@@ -1,7 +1,0 @@
-redmine:
-  url: https://redmine.org/releases/redmine-5.0.1.tar.gz
-  dest: redmine-5.0.1.tar.gz
-  file: redmine-5.0.1
-user_name: redmine
-user_password: redmine
-group_name: redmine 

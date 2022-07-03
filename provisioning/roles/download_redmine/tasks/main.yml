@@ -1,0 +1,30 @@
+- name: Check If Redmine Already Downloaded
+  stat: 
+    path: /opt/redmine
+  register: download_exists 
+  ignore_errors: yes
+
+- name:  Download Resource and Untar File 
+  unarchive:
+    src: "https://redmine.org/releases/redmine-{{ redmine.version }}.tar.gz"
+    dest: "/opt"
+    remote_src: yes
+  when: not download_exists
+  
+- name: Make Symlink to Redmine 
+  file:
+    src: "/opt/redmine-{{ redmine.version }}"
+    dest: "/opt/redmine"
+    state: link
+  when: not download_exists
+
+- name: Delete Tarfile
+  file:
+    state: absent
+    path: "/opt/redmine-{{ redmine.version }}.tar.gz"
+  when: not download_exists
+
+- name: Copy DB Config File
+  copy:
+    src: templates/database.yml.j2
+    dest: /opt/redmine/config/database.yml
