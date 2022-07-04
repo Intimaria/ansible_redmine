@@ -9,7 +9,7 @@
     repo: https://github.com/sstephenson/rbenv.git
     dest: "/home/{{ user_name }}/.rbenv"
     version: v1.2.0
-  when: not rbenv_installed
+  when: not rbenv_installed.stat.exists
 
 - name: Check If Ruby-Build Installed
   stat: 
@@ -21,19 +21,19 @@
   git: 
     repo: https://github.com/rbenv/ruby-build.git
     dest: "/home/{{ user_name }}/.rbenv/plugins/ruby-build"
-  when: not rbuild_installed
+  when: not rbuild_installed.stat.exists
 
 - name: Export Rbenv to PATH
   lineinfile: 
     dest: "/home/{{ user_name}}/.bashrc" 
     line: "export PATH=\"$HOME/.rbenv/bin:$PATH\""
-  when: not rbenv_installed
+  when: not rbenv_installed.stat.exists
 
 - name: Edit .bashrc
   lineinfile: 
     dest: "/home/{{ user_name}}/.bashrc"
     line: "eval \"$(rbenv init -)\""
-  when: not rbenv_installed
+  when: not rbenv_installed.stat.exists
 
 - name: Check Installed Ruby 
   shell: "/home/{{ user_name }}/.rbenv/bin/rbenv versions | grep {{ rbenv.default_ruby }}"

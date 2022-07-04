@@ -6,8 +6,8 @@
     - system
     - user
     - db
-    - apache
     - download_redmine
+    - apache
 
 - name: Install Redmine
   hosts: all
