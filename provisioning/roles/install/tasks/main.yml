@@ -1,0 +1,18 @@
+- name: Install Bundler                                                                                                                                                                                                               
+  gem:                                                                                                                                                  
+    name: bundler
+
+- name: Install Passenger
+  gem: 
+    name: passenger
+
+- name: Create Gemfile.lock
+  file: 
+    path: "{{ redmine_path }}/Gemfile.lock"
+    state: touch
+
+- name: Bundle Install 
+  shell: "/home/{{ user_name }}/.rbenv/shims/bundler install"
+  args: 
+    chdir: "{{ redmine_path }}" 
+    executable: /bin/bash

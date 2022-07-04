@@ -18,13 +18,29 @@
     state: link
   when: not download_exists
 
+- name: Grant Permissions 
+  file:
+    path: /opt/redmine
+    owner: www-data
+    group: www-data
+    mode: u+rwxs,g+rwxs,o+rx
+
 - name: Delete Tarfile
   file:
     state: absent
     path: "/opt/redmine-{{ redmine.version }}.tar.gz"
-  when: not download_exists
 
 - name: Copy DB Config File
   copy:
     src: templates/database.yml.j2
     dest: /opt/redmine/config/database.yml
+
+- name: Copy Passenger Config File
+  copy:
+    src: templates/passenger.conf.j2
+    dest: /etc/apache2/mods-available/passenger.conf 
+
+- name: Copy Redmine Config File
+  copy:
+    src: templates/redmine.conf.j2
+    dest: /etc/apache2/sites-available/redmine.conf

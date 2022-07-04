@@ -47,10 +47,5 @@
 - name: Global Ruby Version
   shell: "/home/{{ user_name }}/.rbenv/bin/rbenv global {{ rbenv.default_ruby }}"
   ignore_errors: yes
-       
-- name: Install Bundler                                                                                                                                                                                                               
-  gem:                                                                                                                                                  
-    name: bundler
 
 
-                                                                                                                 -

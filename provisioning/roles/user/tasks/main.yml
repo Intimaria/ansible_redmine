@@ -7,8 +7,6 @@
     name: "{{ user_name }}"
     create_home: true
     groups: 
-      - "{{ group_name }}"
-      - admin
       - www-data
     comment: 'Redmine Management Account'
     expires: -1
@@ -17,13 +15,6 @@
     password:  "{{ user_password | password_hash('sha512', 'AZ') }}"
     update_password: on_create
     generate_ssh_key: true
-
-# - name: Install SSH Key
-#   authorized_key:
-#     user: "{{ user_name }}"
-#     state: present
-#     manage_dir: true
-#     key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 
 - name: Set-up Redmine Sudo Access 
   copy:

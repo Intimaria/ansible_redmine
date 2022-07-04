@@ -18,6 +18,15 @@
   loop: 
     - apache2
 
-# - name: Set Up WWW Group 
+- name: Make Symlink Apache Web Root 
+  file: 
+    src: /opt/redmine/public
+    dest: /var/www/html/redmine
+    state: link
 
-# - name: Copy File 
+- name: Grant Permissions Web Directory
+  file:
+    path: /var/www/html/redmine
+    owner: www-data
+    group: www-data
+    mode: u+rwxs,g+rwxs,o+rx

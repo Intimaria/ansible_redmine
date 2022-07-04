@@ -1,0 +1,5 @@
+user_name: redmine
+user_password: redmine
+group_name: redmine
+databse_name: redmine
+redmine_path: /opt/redmine
