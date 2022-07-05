@@ -2,4 +2,5 @@ user_name: redmine
 user_password: redmine
 group_name: redmine
 databse_name: redmine
+root_password: changeme
 redmine_path: "/srv/redmine"

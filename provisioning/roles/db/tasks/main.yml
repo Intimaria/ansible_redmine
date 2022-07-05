@@ -5,14 +5,36 @@
     state: started
     enabled: yes
 
+- name: Secure DB | Set MySQL root Password
+  mysql_user:
+    name: 'root'
+    password: '{{ root_password }}'
+    state: present
+
+- name:  Apache | Copy MYSQL Config File
+  become: yes
+  become_user: root 
+  copy:
+    src: templates/.my.cnf.j2
+    dest: /root/.my.cnf
+    owner: root
+    group: root
+    mode: 0600
+
 - name: DB | Create Redmine DB 
   mysql_db:
+    login_host: localhost
+    login_user: root
+    login_password: "{{ root_password }}"
     name: redmine 
     state: present
     encoding: utf8
 
 - name: DB |  Create Redmine DB User
   mysql_user:
+    login_host: localhost
+    login_user: root
+    login_password: "{{ root_password }}"
     name: "{{ user_name }}"
     password: "{{ user_password }}"
     priv: 'redmine.*:ALL,GRANT'
@@ -20,9 +42,20 @@
   with_items:
     - 127.0.0.1
     - localhost
+    - '::1'
 
-  # remove root password 
+- name: Secure DB | Remove Anonymous User Aaccounts
+  community.mysql.mysql_user:
+    name: ''
+    host_all: yes
+    state: absent
+
+- name: DB | Flush Privileges
+  shell: mysql -u root -e 'FLUSH PRIVILEGES'
+
+
+
+  # add root password 
   # remove anonymous users 
   # disallow remote login 
-  # remove test databases 
   # reload privilege tables
