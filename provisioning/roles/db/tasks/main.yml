@@ -1,7 +1,7 @@
 - name: DB | Start MySQL service
   become: yes
   service: 
-    name: mysql 
+    name: mysql
     state: started
     enabled: yes
 

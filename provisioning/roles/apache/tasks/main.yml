@@ -45,6 +45,14 @@
     src: templates/redmine.conf.j2
     dest: /etc/apache2/sites-available/redmine.conf
 
+- name:  Apache | Copy Default  File
+  become: yes
+  become_user: root
+  copy:
+    src: templates/000-default.conf.j2
+    dest: /etc/apache2/sites-available/000-default.conf.j2
+
+
 - name: Redmine Setup | Passenger Services Module
   become: yes
   shell: 'a2enmod passenger'

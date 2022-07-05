@@ -42,6 +42,7 @@
     name:
       - libapache2-mod-passenger
     state: present
+
 ### ----------------------------- ###
 
 - name: System | Apt Update 
@@ -60,6 +61,7 @@
       - apache2
       - libapache2-mod-passenger
       - libmysqlclient-dev
+      - mysql-server
       - python3-mysqldb
       - acl
     state: present
@@ -89,3 +91,10 @@
   reboot:
   when: task_result is changed
 
+- name: System | Debug Ansible Variables
+  debug: 
+    var: "{{ ansible_env.HOME }}"
+
+- name: System | Debug Local Variables
+  debug: 
+    msg: "{{ lookup('ansible.builtin.env', 'HOME', default='House') }}"

@@ -24,3 +24,11 @@
   become_user: root
   roles:
     - apache # Copy configuration & restart service 
+
+- name: Run Redmine
+  hosts: all
+  become: yes
+  become_user: "{{ user_name }}"
+  become_method: sudo
+  roles: 
+    - run_redmine # Bundler & Gems 

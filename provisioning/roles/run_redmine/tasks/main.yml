@@ -1,0 +1,77 @@
+- name: Source .bashrc
+  become: yes
+  shell: ". ~/.bashrc" 
+  args: 
+    executable: /bin/bash
+
+- name: Redmine Setup | Gem Update for System 
+  shell: "~/.rbenv/shims/gem update --system"
+  args: 
+    chdir: "{{ redmine_path }}" 
+    executable: /bin/bash
+
+- name: Run Redmine | Set Local Path
+  shell: '~/.rbenv/shims/bundle config set 
+         --local path vendor/bundle'
+  args:
+    chdir: "{{ redmine_path }}"
+    executable: /bin/bash
+
+- name: Redmine Setup | Bundle Install 
+  shell: "~/.rbenv/shims/bundle install"
+  args: 
+    chdir: "{{ redmine_path }}" 
+    executable: /bin/bash
+
+- name: Redmine Setup | Bundle Update 
+  shell: "~/.rbenv/shims/bundle update"
+  args: 
+    chdir: "{{ redmine_path }}" 
+    executable: /bin/bash
+
+- name: Redmine Setup | Install Strscan
+  gem: 
+    name: strscan
+    state: latest
+    user_install: no
+    executable: "~/.rbenv/shims/gem"
+
+- name: Redmine Setup | Install Io-Wait
+  gem: 
+    name: io-wait
+    state: latest
+    user_install: no
+    executable: "~/.rbenv/shims/gem"
+
+- name: Redmine Setup | Create Gemfile.lock
+  file: 
+    path: "{{ redmine_path }}/Gemfile.lock"
+    state: touch
+
+- name: Run Redmine | Generate Secret 
+  shell: '~/.rbenv/shims/bundle exec 
+          rake generate_secret_token'
+  args:
+    chdir: "{{ redmine_path }}"
+    executable: /bin/bash
+
+- name: Run Redmine | Rake DB Migrate
+  shell: 'RAILS_ENV=production ~/.rbenv/shims/bundle 
+          exec rake db:migrate'
+  args:
+    chdir: "{{ redmine_path }}"
+    executable: /bin/bash
+
+- name: Run Redmine | Rake Load Defaults
+  shell: 'RAILS_ENV=production ~/.rbenv/shims/bundle 
+          exec rake redmine:load_default_data'
+  args:
+    chdir: "{{ redmine_path }}"
+    executable: /bin/bash
+
+- name: Run Redmine | Rake Run Test Server
+  shell: 'ruby script/server webrick -e production'
+  args:
+    chdir: "{{ redmine_path }}"
+    executable: /bin/bash
+

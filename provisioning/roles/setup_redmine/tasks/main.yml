@@ -8,29 +8,26 @@
   when: "ruby_installed.rc == 1"
 
 - name: Redmine Setup | Local Ruby Version
-  shell: "~/.rbenv/bin/rbenv local {{ rbenv.default_ruby }}"
+  shell: "~/.rbenv/bin/rbenv global {{ rbenv.default_ruby }}"
   args: 
     chdir: "{{ redmine_path }}"
   ignore_errors: yes
 
-- name: Redmine Setup | Install Bundler                                                                                                                                                                                                               
-  gem:                                                                                                                                              
-    name: bundler
+- name: Redmine Setup | Install Bundler 
+  become: yes
+  become_user: root                                                                                                                                                                                                              
+  shell: gem install bundler                                                                                                                                              
+  args: 
+    chdir: "{{ redmine_path }}" 
+    executable: /bin/bash
 
 - name: Redmine Setup | Install Passenger
   gem: 
     name: passenger
     state: latest
     user_install: no
+    executable: "~/.rbenv/shims/gem"
 
-- name: Redmine Setup | Create Gemfile.lock
-  file: 
-    path: "{{ redmine_path }}/Gemfile.lock"
-    state: touch
 
-- name: Redmine Setup | Bundle Install 
-  shell: "~/.rbenv/shims/bundle install"
-  args: 
-    chdir: "{{ redmine_path }}" 
-    executable: /bin/bash
+
 
