@@ -90,7 +90,7 @@
     executable: /bin/bash
 
 - name: Run Redmine | Rake Run Test Server
-  shell: '~/.rbenv/shims/bundle exec rails server -u webrick -e production  &'
+  shell: ' ~/.rbenv/shims/bundle exec rails server -u webrick -e production -d'
   args:
     chdir: "{{ redmine_path }}"
     executable: /bin/bash
