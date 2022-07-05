@@ -1,13 +1,12 @@
 ---
 - name: Setup System
   hosts: all
-  become: true
+  become: yes
+  become_user: root
   roles: 
-    - system
-    - user
-    - db
-    - download_redmine
-    - apache
+    - system # APT update && upgrade -y
+    - user # Create a Redmine User
+    - db # Create a mySql database & user 
 
 - name: Install Redmine
   hosts: all
@@ -15,5 +14,13 @@
   become_user: "{{ user_name }}"
   become_method: sudo
   roles: 
-    - ruby
-    - install
+    - ruby # Install rbenv & ruby
+    - download_redmine # Download & extract Redmine
+    - setup_redmine # Install Gems & Passenger Service 
+
+- name: Setup Apache
+  hosts: all
+  become: yes
+  become_user: root
+  roles:
+    - apache # Copy configuration & restart service 

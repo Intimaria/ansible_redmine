@@ -1,23 +1,71 @@
-- name: Apt Update 
+- name: Passenger | Install GPG & HTTPS Support 
+  become: yes 
+  register: updatesys
+  apt:
+    name:
+      - dirmngr 
+      - gnupg
+    state: present
+
+- name: Passenger | Add Apt Key 
+  apt_key:
+    keyserver: hkp://keyserver.ubuntu.com:80
+    id: 561F9B9CAC40B2F7
+    state: present
+
+- name: Passenger | Install GPG & HTTPS Support 
+  become: yes 
+  register: updatesys
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+    state: present
+
+- name: Passenger | Add Repo
+  become: yes
+  shell: 'echo deb https://oss-binaries.phusionpassenger.com/apt/passenger focal main > /etc/apt/sources.list.d/passenger.list'
+
+
+- name: Passenger | Apt Update 
+  become: yes
   apt:
     upgrade: yes
     update_cache: yes
     cache_valid_time: 3600 
   register: task_result
 
-- name: Apt Install Redmine Dependencies 
+- name: Passenger | Apt Install Redmine Dependencies
+  become: yes 
+  register: updatesys
+  apt:
+    name:
+      - libapache2-mod-passenger
+    state: present
+### ----------------------------- ###
+
+- name: System | Apt Update 
+  become: yes
+  apt:
+    upgrade: yes
+    update_cache: yes
+    cache_valid_time: 3600 
+  register: task_result
+
+- name: System | Apt Install Redmine Dependencies
+  become: yes 
   register: updatesys
   apt:
     name:
       - apache2
       - libapache2-mod-passenger
       - libmysqlclient-dev
-      - mysql-server
       - python3-mysqldb
       - acl
     state: present
 
-- name: Apt install Rbenv Dependencies 
+- name: System | Apt install Rbenv Dependencies 
+  become: yes
   register: updatesys
   apt:
     name: 
@@ -36,7 +84,7 @@
       - libreadline6-dev 
       - zlib1g-dev 
 
-- name: Reboot system
+- name: System | Reboot system
   become: yes 
   reboot:
   when: task_result is changed

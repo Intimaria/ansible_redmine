@@ -1,17 +1,17 @@
-- name: Start MySQL service
+- name: DB | Start MySQL service
   become: yes
   service: 
     name: mysql 
     state: started
-    enabled: true
+    enabled: yes
 
-- name: Create Redmine DB 
+- name: DB | Create Redmine DB 
   mysql_db:
     name: redmine 
     state: present
     encoding: utf8
 
-- name: Create Redmine DB User
+- name: DB |  Create Redmine DB User
   mysql_user:
     name: "{{ user_name }}"
     password: "{{ user_password }}"

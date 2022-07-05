@@ -1,59 +1,36 @@
-- name: Check If Redmine Already Downloaded
+- name: Download Redmine | Check If Redmine Already Downloaded
   stat: 
     path: "{{ redmine_path }}"
   register: downloaded 
   ignore_errors: yes
 
-- name:  Download Resource and Untar File 
+- name: Download Redmine | Download Resource and Untar File 
+  become: yes
+  become_user: root
   unarchive:
     src: "https://redmine.org/releases/redmine-{{ redmine.version }}.tar.gz"
-    dest: "/opt"
+    dest: "/srv"
     remote_src: yes
+    owner: "{{ group_name }}"
+    group: "{{ group_name }}"
+    mode: u+rwxs,g+rwxs,o+rx
   when: not downloaded.stat.exists
 
-- name: Delete Tarfile
+- name: Download Redmine |Delete Tarfile
   file:
     state: absent
     path: "{{ redmine_path }}-{{ redmine.version }}.tar.gz"
-
   
-- name: Make Symlink to Redmine 
+- name: Download Redmine | Make Symlink to Redmine 
+  become: yes
+  become_user: root
   file:
     src: "{{ redmine_path }}-{{ redmine.version }}"
     dest: "{{ redmine_path }}"
     state: link
 
-- name: Grant Permissions Redmine 
-  file:
-    path: "{{ redmine_path }}"
-    owner: www-data
-    group: www-data
-    mode: u+rwxs,g+rwxs,o+rx
-
-- name: Make Symlink Apache Web Root 
-  file: 
-    src: "{{ redmine_path }}/public"
-    dest: /var/www/html/redmine
-    state: link
-
-- name: Grant Permissions Web Directory
-  file:
-    path: /var/www/html/redmine
-    owner: www-data
-    group: www-data
-    mode: u+rwxs,g+rwxs,o+rx
-
-- name: Copy DB Config File
+- name: Download Redmine | Copy DB Config File
   copy:
     src: templates/database.yml.j2
     dest: "{{ redmine_path }}/config/database.yml"
 
-- name: Copy Passenger Config File
-  copy:
-    src: templates/passenger.conf.j2
-    dest: /etc/apache2/mods-available/passenger.conf 
-
-- name: Copy Redmine Config File
-  copy:
-    src: templates/redmine.conf.j2
-    dest: /etc/apache2/sites-available/redmine.conf
