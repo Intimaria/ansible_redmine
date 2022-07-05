@@ -91,10 +91,3 @@
   reboot:
   when: task_result is changed
 
-- name: System | Debug Ansible Variables
-  debug: 
-    var: "{{ ansible_env.HOME }}"
-
-- name: System | Debug Local Variables
-  debug: 
-    msg: "{{ lookup('ansible.builtin.env', 'HOME', default='House') }}"

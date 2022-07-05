@@ -1,41 +1,41 @@
-- name: Check If Rbenv Installed
+- name: Rbenv | Check If Rbenv Installed
   stat: 
     path: "~/.rbenv"
   register: rbenv_installed 
   ignore_errors: yes
 
-- name: Download Rbenv
+- name: Rbenv | Download Rbenv
   git: 
     repo: https://github.com/sstephenson/rbenv.git
     dest: "~/.rbenv"
     version: v1.2.0
   when: not rbenv_installed.stat.exists
 
-- name: Check If Ruby-Build Installed
+- name: Ruby-Build | Check If Ruby-Build Installed
   stat: 
     path: "~/.rbenv/plugins/ruby-build"
   register: rbuild_installed 
   ignore_errors: yes
 
-- name: Download Ruby-Build
+- name: Ruby-Build | Download Ruby-Build
   git: 
     repo: https://github.com/rbenv/ruby-build.git
     dest: "~/.rbenv/plugins/ruby-build"
   when: not rbuild_installed.stat.exists
 
-- name: Export Rbenv to PATH
+- name: Rbenv | Export Rbenv to PATH
   lineinfile: 
     dest: "~/.bashrc" 
     line: "export PATH=\"$HOME/.rbenv/bin:$PATH\""
   when: not rbenv_installed.stat.exists
 
-- name: Edit .bashrc
+- name: Rbenv | Edit .bashrc
   lineinfile: 
     dest: "~/.bashrc"
     line: "eval \"$(rbenv init -)\""
   when: not rbenv_installed.stat.exists
   
-- name: Source .bashrc
+- name: Rbenv | Source .bashrc
   become: yes
   shell: ". ~/.bashrc" 
   args: 

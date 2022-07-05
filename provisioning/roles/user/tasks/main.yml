@@ -1,9 +1,9 @@
-- name: Create Group
+- name: User | Create Group
   become: yes
   group:
     name: "{{ group_name }}"
 
-- name: Create User
+- name: User | Create User
   user:
     name: "{{ user_name }}"
     create_home: yes
@@ -17,7 +17,7 @@
     update_password: on_create
     generate_ssh_key: yes
 
-- name: Set-up Redmine Sudo Access 
+- name: User | Set-up Redmine Sudo Access 
   copy:
     dest: /etc/sudoers.d/redmine
     content: "redmine ALL=(ALL) NOPASSWD:ALL"

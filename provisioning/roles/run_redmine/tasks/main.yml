@@ -33,14 +33,12 @@
   gem: 
     name: strscan
     state: latest
-    user_install: no
     executable: "~/.rbenv/shims/gem"
 
 - name: Redmine Setup | Install Io-Wait
   gem: 
     name: io-wait
     state: latest
-    user_install: no
     executable: "~/.rbenv/shims/gem"
 
 - name: Redmine Setup | Create Gemfile.lock
@@ -63,15 +61,38 @@
     executable: /bin/bash
 
 - name: Run Redmine | Rake Load Defaults
-  shell: 'RAILS_ENV=production ~/.rbenv/shims/bundle 
-          exec rake redmine:load_default_data'
+  expect:
+    command: /bin/bash -c "~/.rbenv/shims/bundle exec rake redmine:load_default_data RAILS_ENV=production"
+    responses:
+      (.*)Select language(.*): en
+  args:
+    chdir: "{{ redmine_path }}"
+  register: load_defaults
+  ignore_errors: yes
+
+- debug:
+    var: load_defaults
+
+- name: Run Redmine | Make Tmp/Pdf
+  file:
+    path: "{{ redmine_path }}/tmp/pdf"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ group_name }}"
+    mode: 0755
+
+- name: Run Redmine | Open Port 3000
+  become: yes
+  become_user: root
+  shell: 'sudo ufw allow 3000/tcp'
   args:
     chdir: "{{ redmine_path }}"
     executable: /bin/bash
 
 - name: Run Redmine | Rake Run Test Server
-  shell: 'ruby script/server webrick -e production'
+  shell: '~/.rbenv/shims/bundle exec rails server -u webrick -e production'
   args:
     chdir: "{{ redmine_path }}"
     executable: /bin/bash
+
 
