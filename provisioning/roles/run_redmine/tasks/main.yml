@@ -82,7 +82,9 @@
 
 - name: Rake Load Defaults
   expect:
-    command: /bin/bash -c "~/.rbenv/shims/bundle exec rake redmine:load_default_data RAILS_ENV=production"
+    command: /bin/bash -c "~/.rbenv/shims/bundle 
+              exec rake redmine:load_default_data 
+              RAILS_ENV=production"
     responses:
       (.*)Select language(.*): en
   args:

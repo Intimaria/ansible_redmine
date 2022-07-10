@@ -4,7 +4,6 @@
   become: yes
   become_user: root
   roles: 
-   # - passenger # System pre-install passenger (keys / repo)
     - system # APT update && upgrade -y
     - user # Create a Redmine User
     - db # Create a mySql database & user 
@@ -18,18 +17,4 @@
     - rbenv # Install rbenv
     - install_redmine # Download Redmine & Copy DB config
     - ruby # Install Ruby & Bundler 
-
-# - name: Setup Apache
-#   hosts: all
-#   become: yes
-#   become_user: root
-#   roles:
-#    # - apache # Copy configuration & restart service 
-
-- name: Run Redmine
-  hosts: all
-  become: yes
-  become_user: "{{ user_name }}"
-  become_method: sudo
-  roles: 
     - run_redmine # Run Bundler, Install Gems, Rake DB, Server Up
