@@ -15,16 +15,16 @@
   become_user: "{{ user_name }}"
   become_method: sudo
   roles: 
-    - ruby # Install rbenv & ruby
-    - download_redmine # Download & extract Redmine
-    - setup_redmine # Install Gems & Passenger Service 
+    - rbenv # Install rbenv
+    - install_redmine # Download Redmine & Copy DB config
+    - ruby # Install Ruby & Bundler 
 
-- name: Setup Apache
-  hosts: all
-  become: yes
-  become_user: root
-  roles:
-   # - apache # Copy configuration & restart service 
+# - name: Setup Apache
+#   hosts: all
+#   become: yes
+#   become_user: root
+#   roles:
+#    # - apache # Copy configuration & restart service 
 
 - name: Run Redmine
   hosts: all

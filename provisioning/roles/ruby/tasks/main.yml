@@ -1,59 +1,34 @@
-- name: Rbenv | Check If Rbenv Installed
-  stat: 
-    path: "~/.rbenv"
-  register: rbenv_installed 
+- name: Redmine Setup  | Check Installed Ruby 
+  shell: "~/.rbenv/bin/rbenv versions | grep {{ rbenv.default_ruby }}"
+  register: ruby_installed
   ignore_errors: yes
   tags:
-    - rbenv
+    - ruby 
+    - install_redmine
 
-- name: Rbenv | Download Rbenv
-  git: 
-    repo: https://github.com/sstephenson/rbenv.git
-    dest: "~/.rbenv"
-    version: v1.2.0
-  when: not rbenv_installed.stat.exists
+- name: Redmine Setup | Install Ruby
+  shell: "~/.rbenv/bin/rbenv install {{ rbenv.default_ruby }} -k"
+  when: "ruby_installed.rc == 1"
   tags:
-    - rbenv
+    - ruby 
+    - install_redmine
 
-- name: Ruby-Build | Check If Ruby-Build Installed
-  stat: 
-    path: "~/.rbenv/plugins/ruby-build"
-  register: rbuild_installed 
+- name: Redmine Setup | Global Ruby Version
+  shell: "~/.rbenv/bin/rbenv global {{ rbenv.default_ruby }}"
   ignore_errors: yes
   tags:
-    - rbenv
+    - ruby 
+    - install_redmine
 
-- name: Ruby-Build | Download Ruby-Build
-  git: 
-    repo: https://github.com/rbenv/ruby-build.git
-    dest: "~/.rbenv/plugins/ruby-build"
-  when: not rbuild_installed.stat.exists
-  tags:
-    - rbenv
-
-- name: Rbenv | Export Rbenv to PATH
-  lineinfile: 
-    dest: "~/.bashrc" 
-    line: "export PATH=\"$HOME/.rbenv/bin:$PATH\""
-  when: not rbenv_installed.stat.exists
-  tags:
-    - rbenv
-
-- name: Rbenv | Edit .bashrc
-  lineinfile: 
-    dest: "~/.bashrc"
-    line: "eval \"$(rbenv init -)\""
-  when: not rbenv_installed.stat.exists
-  tags:
-    - rbenv
-
-- name: Rbenv | Source .bashrc
+- name: Redmine Setup | Install Bundler 
   become: yes
-  shell: ". ~/.bashrc" 
+  become_user: root                                                                                                                                                                                                              
+  shell: gem install bundler                                                                                                                                              
   args: 
+    chdir: "{{ redmine_path }}" 
     executable: /bin/bash
   tags:
-    - rbenv
-
+    - ruby
+    - install_redmine
 
 
