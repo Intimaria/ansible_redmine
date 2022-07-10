@@ -20,10 +20,8 @@
     - ruby 
     - install_redmine
 
-- name: Install Bundler 
-  become: yes
-  become_user: root                                                                                                                                                                                                              
-  shell: gem install bundler                                                                                                                                              
+- name: Install Bundler                                                                                                                                                                                                            
+  shell: ~/.rbenv/shims/gem install bundler                                                                                                                                              
   args: 
     chdir: "{{ redmine_path }}" 
     executable: /bin/bash
