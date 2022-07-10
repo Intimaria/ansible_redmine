@@ -8,7 +8,6 @@
 
 - name: Package Install Rbenv Dependencies 
   become: yes
-  register: updatesys
   package:
     name: "{{ item }}"
     state: present 
@@ -16,7 +15,6 @@
 
 - name: Package Install Redmine Dependencies
   become: yes 
-  register: updatesys
   package:
     name: "{{ item }}"
     state: present

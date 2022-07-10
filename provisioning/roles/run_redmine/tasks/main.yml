@@ -1,11 +1,3 @@
-- name: Source .bashrc
-  become: yes
-  shell: ". ~/.bashrc" 
-  args: 
-    executable: /bin/bash
-  tags:
-    install_redmine
-
 - name: Install Bundler                                                                                                                                                                                                            
   shell: ~/.rbenv/shims/gem install bundler                                                                                                                                              
   args: 
@@ -14,13 +6,14 @@
     - ruby
     - install_redmine
 
-- name: Gem Update for System 
-  shell: "~/.rbenv/shims/gem update --system"
-  args: 
-    chdir: "{{ redmine_path }}" 
-    executable: /bin/bash
-  tags:
-    install_redmine
+# Takes ages, good to have but can comment out if needed
+# - name: Gem Update for System 
+#   shell: "~/.rbenv/shims/gem update --system"
+#   args: 
+#     chdir: "{{ redmine_path }}" 
+#     executable: /bin/bash
+#   tags:
+#     install_redmine
 
 - name: Set Local Path
   shell: '~/.rbenv/shims/bundle config set 
@@ -171,27 +164,6 @@
     - install_puma
   when: not puma_service_file.stat.exists 
 
-# - name: Reload Puma service
-#   become: yes
-#   become_user: root 
-#   systemd:
-#     state: started
-#     daemon_reload: yes
-#     name: puma.service
-#   register: puma_reload
-
-# - debug:
-#     var: puma_reload
-# # --------------- Web ------------ #
-
-# - name: Get Puma Service Status
-#   systemd:
-#     name: "puma.service"
-#   register: puma_service
-
-# - debug:
-#     var: puma_service
-
 - name: Start Puma Service
   become: yes
   become_user: root 
@@ -201,7 +173,9 @@
     name: puma.service
   tags: 
     - install_puma
-    
+
+# ------- use puma directly ----------- # 
+
 # - name: Open Port 3000
 #   become: yes
 #   become_user: root
