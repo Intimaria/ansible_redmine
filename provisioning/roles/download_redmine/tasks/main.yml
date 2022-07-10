@@ -1,10 +1,12 @@
-- name: Download Redmine | Check If Redmine Already Downloaded
+- name: Check If Redmine Already Downloaded
   stat: 
     path: "{{ redmine_path }}"
   register: downloaded 
   ignore_errors: yes
+  tags: 
+    - install_redmine
 
-- name: Download Redmine | Download Resource and Untar File 
+- name: Download Resource and Untar File 
   become: yes
   become_user: root
   unarchive:
@@ -15,22 +17,29 @@
     group: "{{ group_name }}"
     mode: u+rwxs,g+rwxs,o+rx
   when: not downloaded.stat.exists
+  tags: 
+    - install_redmine
 
-- name: Download Redmine |Delete Tarfile
+- name: Delete Tarfile
   file:
     state: absent
     path: "{{ redmine_path }}-{{ redmine.version }}.tar.gz"
-  
-- name: Download Redmine | Make Symlink to Redmine 
+  tags: 
+    - install_redmine
+
+- name: Make Symlink to Redmine 
   become: yes
   become_user: root
   file:
     src: "{{ redmine_path }}-{{ redmine.version }}"
     dest: "{{ redmine_path }}"
     state: link
+  tags: 
+    - install_redmine
 
-- name: Download Redmine | Copy DB Config File
+- name: Copy DB Config File
   copy:
     src: templates/database.yml.j2
     dest: "{{ redmine_path }}/config/database.yml"
-
+  tags: 
+    - install_redmine

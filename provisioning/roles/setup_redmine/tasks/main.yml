@@ -2,16 +2,23 @@
   shell: "~/.rbenv/bin/rbenv versions | grep {{ rbenv.default_ruby }}"
   register: ruby_installed
   ignore_errors: yes
+  tags:
+    - ruby 
+    - install_redmine
 
 - name: Redmine Setup | Install Ruby
   shell: "~/.rbenv/bin/rbenv install {{ rbenv.default_ruby }} -k"
   when: "ruby_installed.rc == 1"
+  tags:
+    - ruby 
+    - install_redmine
 
-- name: Redmine Setup | Local Ruby Version
+- name: Redmine Setup | Global Ruby Version
   shell: "~/.rbenv/bin/rbenv global {{ rbenv.default_ruby }}"
-  args: 
-    chdir: "{{ redmine_path }}"
   ignore_errors: yes
+  tags:
+    - ruby 
+    - install_redmine
 
 - name: Redmine Setup | Install Bundler 
   become: yes
@@ -20,14 +27,8 @@
   args: 
     chdir: "{{ redmine_path }}" 
     executable: /bin/bash
-
-- name: Redmine Setup | Install Passenger
-  gem: 
-    name: passenger
-    state: latest
-    user_install: no
-    executable: "~/.rbenv/shims/gem"
-
-
+  tags:
+    - ruby
+    - install_redmine
 
 

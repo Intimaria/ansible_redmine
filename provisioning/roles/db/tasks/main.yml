@@ -1,17 +1,23 @@
-- name: DB | Start MySQL service
+- name: Start MySQL service
   become: yes
   service: 
     name: mysql
     state: started
     enabled: yes
+  tags: 
+    - db
+    - secure_mysql
 
-- name: Secure DB | Set MySQL root Password
+- name:  Set MySQL root Password
   mysql_user:
     name: 'root'
     password: '{{ root_password }}'
     state: present
+  tags: 
+    - db
+    - secure_mysql
 
-- name:  Apache | Copy MYSQL Config File
+- name:  Copy MYSQL Config File
   become: yes
   become_user: root 
   copy:
@@ -20,8 +26,20 @@
     owner: root
     group: root
     mode: 0600
+  tags: 
+    - db
+    - secure_mysql
 
-- name: DB | Create Redmine DB 
+- name: Remove Anonymous User Aaccounts
+  community.mysql.mysql_user:
+    name: ''
+    host_all: yes
+    state: absent
+  tags: 
+    - db
+    - secure_mysql
+
+- name: Create Redmine DB 
   mysql_db:
     login_host: localhost
     login_user: root
@@ -29,8 +47,10 @@
     name: redmine 
     state: present
     encoding: utf8
+  tags: 
+    - db
 
-- name: DB |  Create Redmine DB User
+- name:  Create Redmine DB User
   mysql_user:
     login_host: localhost
     login_user: root
@@ -43,19 +63,16 @@
     - 127.0.0.1
     - localhost
     - '::1'
+  tags: 
+    - db
 
-- name: Secure DB | Remove Anonymous User Aaccounts
-  community.mysql.mysql_user:
-    name: ''
-    host_all: yes
-    state: absent
-
-- name: DB | Flush Privileges
+- name: Flush Privileges
   shell: mysql -u root -e 'FLUSH PRIVILEGES'
-
-
+  tags: 
+    - db
+    - secure_mysql
 
   # add root password 
   # remove anonymous users 
-  # disallow remote login 
+  # disallow remote login ??
   # reload privilege tables
