@@ -20,13 +20,5 @@
     - ruby 
     - install_redmine
 
-- name: Install Bundler                                                                                                                                                                                                            
-  shell: ~/.rbenv/shims/gem install bundler                                                                                                                                              
-  args: 
-    chdir: "{{ redmine_path }}" 
-    executable: /bin/bash
-  tags:
-    - ruby
-    - install_redmine
 
 

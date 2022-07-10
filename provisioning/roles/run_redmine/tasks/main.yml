@@ -6,6 +6,14 @@
   tags:
     install_redmine
 
+- name: Install Bundler                                                                                                                                                                                                            
+  shell: ~/.rbenv/shims/gem install bundler                                                                                                                                              
+  args: 
+    executable: /bin/bash
+  tags:
+    - ruby
+    - install_redmine
+
 - name: Gem Update for System 
   shell: "~/.rbenv/shims/gem update --system"
   args: 
@@ -39,7 +47,7 @@
   tags:
     install_redmine
 
-- name: Redmine Setup | Install Strscan
+- name: Install Strscan
   gem: 
     name: strscan
     state: latest
@@ -47,7 +55,7 @@
   tags:
     install_redmine
 
-- name: Redmine Setup | Install Io-Wait
+- name: Install Io-Wait
   gem: 
     name: io-wait
     state: latest
@@ -138,8 +146,8 @@
   copy:
     src: templates/puma.rb.j2
     dest: "{{ redmine_path }}/config/puma.rb"
-    owner: redmine
-    group: redmine
+    owner: "{{ group_name }}"
+    group: "{{ group_name }}"
   tags: 
     - install_puma
 

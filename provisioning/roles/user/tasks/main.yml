@@ -1,12 +1,11 @@
-- name: User | Create Group
-  become: yes
+- name: Create Group 
   group:
     name: "{{ group_name }}"
 
-- name: User | Create User
+- name: Create User
   user:
     name: "{{ user_name }}"
-    create_home: yes
+    create_home: true
     groups: 
       - "{{ group_name }}"
     comment: 'Redmine Management Account'
@@ -15,10 +14,19 @@
     shell: /bin/bash
     password:  "{{ user_password | password_hash('sha512', 'AZ') }}"
     update_password: on_create
-    generate_ssh_key: yes
+    generate_ssh_key: true
 
-- name: User | Set-up Redmine Sudo Access 
+- name: Set-up Redmine Sudo Access 
   copy:
     dest: /etc/sudoers.d/redmine
     content: "redmine ALL=(ALL) NOPASSWD:ALL"
     validate: "/usr/sbin/visudo -cf %s"
+
+# - name: Create User Remote Temp
+#   become: yes 
+#   become_user: "{{ user_name}}"
+#   become_method: sudo
+#   file: 
+#     path: "/home/{{ user_name }}/.ansible/tmp"
+#     state: directory
+#     mode: 0755

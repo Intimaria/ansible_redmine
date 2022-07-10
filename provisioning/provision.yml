@@ -6,13 +6,16 @@
   roles: 
     - system # APT update && upgrade -y
     - user # Create a Redmine User
+
+- name: Create Database
+  hosts: all
+  roles: 
     - db # Create a mySql database & user 
 
 - name: Install Redmine
   hosts: all
   become: yes
   become_user: "{{ user_name }}"
-  become_method: sudo
   roles: 
     - rbenv # Install rbenv
     - install_redmine # Download Redmine & Copy DB config
