@@ -1,48 +1,28 @@
-
-### ----------------------------- ###
-
-- name: System | Apt Update 
+- name: System Update && Upgrade
   become: yes
-  apt:
+  package:
     upgrade: yes
     update_cache: yes
     cache_valid_time: 3600 
   register: task_result
 
-- name: System | Apt Install Redmine Dependencies
-  become: yes 
-  register: updatesys
-  apt:
-    name:
-      - apache2
-      - libapache2-mod-passenger
-      - libmysqlclient-dev
-      - mysql-server
-      - python3-mysqldb
-      - acl
-    state: present
-
-- name: System | Apt install Rbenv Dependencies 
+- name: Package Install Rbenv Dependencies 
   become: yes
   register: updatesys
-  apt:
-    name: 
-      - git
-      - curl
-      - libssl-dev
-      - libreadline-dev
-      - zlib1g-dev
-      - autoconf
-      - bison
-      - build-essential
-      - libyaml-dev
-      - libncurses5-dev
-      - libffi-dev
-      - libgdbm-dev
-      - libreadline6-dev 
-      - zlib1g-dev 
+  package:
+    name: "{{ item }}"
+    state: present 
+  loop: "{{ rbenv_dependencies }}"
 
-- name: System | Reboot system
+- name: Package Install Redmine Dependencies
+  become: yes 
+  register: updatesys
+  package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ redmine_dependencies }}"
+
+- name: Reboot System
   become: yes 
   reboot:
   when: task_result is changed

@@ -1,4 +1,4 @@
-- name: Redmine Setup  | Check Installed Ruby 
+- name: Check Installed Ruby 
   shell: "~/.rbenv/bin/rbenv versions | grep {{ rbenv.default_ruby }}"
   register: ruby_installed
   ignore_errors: yes
@@ -6,21 +6,21 @@
     - ruby 
     - install_redmine
 
-- name: Redmine Setup | Install Ruby
+- name: Install Ruby
   shell: "~/.rbenv/bin/rbenv install {{ rbenv.default_ruby }} -k"
   when: "ruby_installed.rc == 1"
   tags:
     - ruby 
     - install_redmine
 
-- name: Redmine Setup | Global Ruby Version
+- name: Global Ruby Version
   shell: "~/.rbenv/bin/rbenv global {{ rbenv.default_ruby }}"
   ignore_errors: yes
   tags:
     - ruby 
     - install_redmine
 
-- name: Redmine Setup | Install Bundler 
+- name: Install Bundler 
   become: yes
   become_user: root                                                                                                                                                                                                              
   shell: gem install bundler                                                                                                                                              
