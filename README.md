@@ -22,23 +22,23 @@ Estructura de directorios
 ```
 hosts                       # Inventory
 provisioning/
-    provision.yml           # Playbook
-    roles/                  # Roles
-        role1/
-            tasks/
-                main.yml    # Tasks
-            templates/
-                template.j2 # Templates de Jinja2
-            vars/
-                main.yml    # Variables locales al rol
+  provision.yml             # Playbook
     group_vars/
-        all/
-            main.yml        # Variables globales
+      all/
+        main.yml            # Variables globales
+    roles/                  # Roles
+      role1/
+        tasks/
+           main.yml         # Tasks
+             templates/
+               template.j2  # Templates de Jinja2
+              vars/
+                main.yml    # Variables locales al rol
 Vagrantfile                 # Configuracion Vagrant Machine
 
 ```
 
-## Pasos 
+## Pasos 
 
 * Instalacion de paquetes && update-upgrade
 * Creacion de grupo y usuario 'redmine' que administrará redmine con autorizacion para usuario
@@ -60,8 +60,9 @@ Vagrantfile                 # Configuracion Vagrant Machine
 
 ### Buenas Practicas 
 
-[Buenas Practicas parte 1](https://medium.com/polarsquad/ansible-best-practices-part-1-b3391b3c6f68)
-[Buenas Practicas parte 2 (más útil)](https://polarsquad.com/blog/ansible-best-practices-part-2)
+* [Buenas Practicas parte 1](https://medium.com/polarsquad/ansible-best-practices-part-1-b3391b3c6f68)
+* [Buenas Practicas parte 2 (más útil)](https://polarsquad.com/blog/ansible-best-practices-part-2)
+
 ### Vagrant Provision Docs
 
 [Ansible Intro](https://www.vagrantup.com/docs/provisioning/ansible_intro)
