@@ -1,0 +1,11 @@
+upstream puma {
+	Server loclahost:3000
+}
+
+server {
+
+	location / {
+		proxy_pass http://localhost:80
+	}
+
+}

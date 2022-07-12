@@ -1,4 +1,6 @@
 
+- name: Include Distro Specific Packages.
+  include_vars: "{{ ansible_facts['distribution'] }}.yml"
 
 - name: Package Install Nginx Dependencies
   become: yes 
@@ -7,12 +9,18 @@
     state: present
   loop: "{{ nginx_dependencies }}"
 
+- name: Check If Key Should Be Downloaded 
+  stat: 
+    path: /usr/share/keyrings/nginx-archive-keyring.gpg
+  register: key_downloaded 
+
 - name: Import a key from a file
   become: yes
   shell: "curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor 
          | sudo tee /usr/share/keyrings/nginx-archive-keyring.gpg >/dev/null"
   args:
     executable: /bin/bash
+  when: not key_downloaded.stat.exists
 
 - name: Verify the key, using a fingerprint, before import
   shell: "gpg --dry-run --quiet --import --import-options  

@@ -1,3 +1,6 @@
+- name: Include Distro Specific Packages.
+  include_vars: "{{ ansible_facts['distribution'] }}.yml"
+
 - name: System Update && Upgrade
   become: yes
   package:
@@ -5,6 +8,11 @@
     update_cache: yes
     cache_valid_time: 3600 
   register: task_result
+
+- debug:
+    var: ansible_os_family
+- debug: 
+    var: ansible_facts['distribution'] 
 
 - name: Package Install Rbenv Dependencies 
   become: yes

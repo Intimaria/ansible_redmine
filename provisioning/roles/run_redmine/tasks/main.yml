@@ -30,7 +30,7 @@
     chdir: "{{ redmine_path }}" 
     executable: /bin/bash
   tags:
-    install_redmine
+    - install_redmine
 
 - name: Bundle Update 
   shell: "~/.rbenv/shims/bundle update"
@@ -38,7 +38,7 @@
     chdir: "{{ redmine_path }}" 
     executable: /bin/bash
   tags:
-    install_redmine
+    - install_redmine
 
 - name: Install Strscan
   gem: 
@@ -46,7 +46,7 @@
     state: latest
     executable: "~/.rbenv/shims/gem"
   tags:
-    install_redmine
+    - install_redmine
 
 - name: Install Io-Wait
   gem: 
@@ -54,14 +54,14 @@
     state: latest
     executable: "~/.rbenv/shims/gem"
   tags:
-    install_redmine
+    - install_redmine
 
 - name: Create Gemfile.lock
   file: 
     path: "{{ redmine_path }}/Gemfile.lock"
     state: touch
   tags:
-    install_redmine
+    - install_redmine
 
 - name: Generate Secret 
   shell: '~/.rbenv/shims/bundle exec 
@@ -70,7 +70,7 @@
     chdir: "{{ redmine_path }}"
     executable: /bin/bash
   tags:
-    install_redmine
+    - install_redmine
 
 - name: Rake DB Migrate
   shell: 'RAILS_ENV=production ~/.rbenv/shims/bundle 
@@ -79,7 +79,7 @@
     chdir: "{{ redmine_path }}"
     executable: /bin/bash
   tags:
-    install_redmine
+    - install_redmine
 
 - name: Rake Load Defaults
   expect:
@@ -93,7 +93,7 @@
   register: load_defaults
   ignore_errors: yes
   tags:
-    install_redmine
+    - install_redmine
 
 - name: Make Tmp/Pdf
   file:
@@ -103,7 +103,7 @@
     group: "{{ group_name }}"
     mode: 0755
   tags:
-    install_redmine
+    - install_redmine
 
 #-------------- PUMA -----------# 
 
@@ -114,7 +114,7 @@
     state: absent 
   register: test_puma
   tags:
-    install_puma 
+    - install_puma 
 
 - name: Add Puma To Gemfile 
   lineinfile:
@@ -123,7 +123,7 @@
     line: gem 'puma'
     state: present
   tags:
-    install_puma 
+    - install_puma 
 
 - name: Bundle Install 
   shell: "~/.rbenv/shims/bundle install"
@@ -131,7 +131,7 @@
     chdir: "{{ redmine_path }}" 
     executable: /bin/bash
   tags:
-    install_puma 
+    - install_puma 
 
 - name:  Copy Puma Config File
   become: yes
@@ -157,7 +157,7 @@
   become_user: root 
   copy:
     src: templates/puma.service.j2
-    dest: /etc/systemd/system/puma.service
+    dest: /etc/systemd/system/vice
     owner: root
     group: root
   tags: 
