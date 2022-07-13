@@ -12,26 +12,11 @@
   unarchive:
     src: "https://redmine.org/releases/redmine-{{ redmine.version }}.tar.gz"
     dest: "/srv"
-    remote_src: yes
-  when: not downloaded.stat.exists
-  tags: 
-    - install_redmine
-
-- name: Give ownership of redmine to redmine
-  become: yes
-  become_user: root
-  file: 
-    path: "{{ redmine_path }}"
     owner: "{{ group_name }}"
     group: "{{ group_name }}"
-    mode: u+rwxs,g+rwxs,o+rx
-    recurse : yes
-    state: directory
-
-- name: Delete Tarfile
-  file:
-    state: absent
-    path: "{{ redmine_path }}-{{ redmine.version }}.tar.gz"
+    mode: 0755
+    remote_src: yes
+  when: not downloaded.stat.exists
   tags: 
     - install_redmine
 
@@ -41,10 +26,14 @@
   file:
     src: "{{ redmine_path }}-{{ redmine.version }}"
     dest: "{{ redmine_path }}"
-    # owner: "{{ group_name }}"
-    # group: "{{ group_name }}"
-    # mode: u+rwxs,g+rwxs,o+rx
     state: link
+  tags: 
+    - install_redmine
+
+- name: Delete Tarfile
+  file:
+    state: absent
+    path: "{{ redmine_path }}-{{ redmine.version }}.tar.gz"
   tags: 
     - install_redmine
 

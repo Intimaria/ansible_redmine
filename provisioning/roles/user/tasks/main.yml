@@ -8,6 +8,7 @@
     create_home: true
     groups: 
       - "{{ group_name }}"
+      - www-data
     comment: 'Redmine Management Account'
     expires: -1
     state: present

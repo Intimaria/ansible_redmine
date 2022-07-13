@@ -9,11 +9,6 @@
     cache_valid_time: 3600 
   register: task_result
 
-- debug:
-    var: ansible_os_family
-- debug: 
-    var: ansible_facts['distribution'] 
-
 - name: Package Install Rbenv Dependencies 
   become: yes
   package:

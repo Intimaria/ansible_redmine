@@ -18,9 +18,10 @@
   become_user: "{{ user_name }}"
   roles: 
     - rbenv # Install rbenv
-    - install_redmine # Download Redmine & Copy DB config
+    - redmine_download # Download Redmine & Copy DB config
     - ruby # Install Ruby & Bundler 
-    - run_redmine # Run Bundler, Install Gems, Rake DB, Server Up
+    - redmine_config # Run Bundler, Install Gems, Rake DB, Server Up
+    - puma # install puma gem, add puma service & reload
 
 - name: Nginx
   hosts: all 
@@ -32,5 +33,6 @@
   #     name: install_nginx # Install nginx
   #   when: "'nginx' not in ansible_facts.packages"
   roles: 
-    - install_nginx
-    - run_nginx # Configure & run reverse proxy service
+    - nginx_install
+    - nginx_serve # Configure & run reverse proxy service
+
