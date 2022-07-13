@@ -68,16 +68,3 @@
     - '::1'
   tags: 
     - db
-
-# - name: Flush Privileges
-#   become: yes
-#   become_user: root
-#   shell: mysql -u root -e 'FLUSH PRIVILEGES'
-#   tags: 
-#     - db
-#     - secure_mysql
-
-  # add root password 
-  # remove anonymous users 
-  # disallow remote login ??
-  # reload privilege tables

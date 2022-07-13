@@ -22,12 +22,3 @@
     dest: /etc/sudoers.d/redmine
     content: "redmine ALL=(ALL) NOPASSWD:ALL"
     validate: "/usr/sbin/visudo -cf %s"
-
-# - name: Create User Remote Temp
-#   become: yes 
-#   become_user: "{{ user_name}}"
-#   become_method: sudo
-#   file: 
-#     path: "/home/{{ user_name }}/.ansible/tmp"
-#     state: directory
-#     mode: 0755

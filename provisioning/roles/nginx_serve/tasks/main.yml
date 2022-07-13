@@ -33,7 +33,7 @@
   become_user: root
   copy:
     src: templates/redmine.conf.j2
-    dest: "/etc/nginx/sites-available/redmine.conf"
+    dest: /etc/nginx/sites-available/redmine.conf
 
 - name: Make Symlink to sites enabled 
   become: yes
@@ -53,21 +53,6 @@
   service: 
     name: nginx
     daemon_reload: yes
-
-# - name: Backup Default
-#   become: yes
-#   file:
-#     src: /etc/nginx/sites-available/default
-#     dest: /etc/nginx/sites-available/default.backup
-#     state: hard
-
-# - name: Remove Default
-#   become: yes
-#   file:
-#     path: /etc/nginx/sites-available/default
-#     state: absent
-
-
 
 - name: Stop Nginx service
   become: yes

@@ -9,7 +9,7 @@ Vagrant.configure("2") do |config|
   end 
 
   config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "provisioning/provision.yml"
+    ansible.playbook = "provisioning/redmine.yml"
   end
 
 end

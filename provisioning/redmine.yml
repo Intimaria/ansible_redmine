@@ -25,14 +25,7 @@
 
 - name: Nginx
   hosts: all 
-  # tasks:
-  # - name: "Check if Ngninx is installed"
-  #   package_facts:
-  #     manager: "auto"
-  # - include_role:
-  #     name: install_nginx # Install nginx
-  #   when: "'nginx' not in ansible_facts.packages"
   roles: 
-    - nginx_install
+    - nginx_install # GPG & Repo config & install package
     - nginx_serve # Configure & run reverse proxy service
 
