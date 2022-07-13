@@ -7,13 +7,13 @@
     - install_redmine
 
 # Takes ages, good to have but can comment out if needed
-- name: Gem Update for System 
-  shell: "~/.rbenv/shims/gem update --system"
-  args: 
-    chdir: "{{ redmine_path }}" 
-    executable: /bin/bash
-  tags:
-    install_redmine
+# - name: Gem Update for System 
+#   shell: "~/.rbenv/shims/gem update --system"
+#   args: 
+#     chdir: "{{ redmine_path }}" 
+#     executable: /bin/bash
+#   tags:
+#     install_redmine
 
 - name: Set Local Path
   shell: '~/.rbenv/shims/bundle config set 
