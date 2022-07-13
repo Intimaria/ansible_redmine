@@ -1,36 +1,24 @@
 # - name: insert nginx conf file 
 
 - name: Make sure www-data part of www-data group
-  user: 
-    group: www-data 
+  become: yes
+  user:
+    name: www-data
+    groups: www-data 
+    append: yes
   
 - name: Make Symlink to Redmine Public
   become: yes
   file:
-    src: "{{ redmine_path }}/public/"
-    dest: /var/www/html/redmine/
+    src: "{{ redmine_path }}/public"
+    dest: /var/www/html/redmine
     state: link
 
-- name: Chown /var/www/html/redmine/ folder to www-data group
+- name: Chown folder contents to www-data group
   become: yes
   file: 
-    path: /var/www/html/redmine/tmp/
-    group: www-data
-    recurse : yes
-    mode: 0755
-
-- name: Chown tmp folder to www-data group
-  become: yes
-  file: 
-    path: /var/www/html/redmine/tmp/
-    group: www-data
-    recurse : yes
-    mode: 0755
-
-- name: Chown log folder to www-data group
-  become: yes
-  file: 
-    path: /var/www/html/redmine/log/
+    path: /var/www/html/redmine/
+    owner: www-data
     group: www-data
     recurse : yes
     state: directory

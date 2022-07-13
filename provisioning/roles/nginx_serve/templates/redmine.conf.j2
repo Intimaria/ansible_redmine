@@ -5,7 +5,7 @@ upstream puma {
 server {
         listen 80;
 		server_name localhost;
-        root    /var/www/html/public/;
+        root    /srv/redmine/public/;
 
         location / {
                 try_files $uri/index.html $uri.html $uri @rails;
