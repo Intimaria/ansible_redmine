@@ -4,7 +4,9 @@
   become: yes
   user:
     name: www-data
-    groups: www-data 
+    groups: 
+      - www-data 
+      - "{{ group_name }}"
     append: yes
   
 - name: Make Symlink to Redmine Public
@@ -14,19 +16,19 @@
     dest: /var/www/html/redmine
     state: link
 
-- name: Chown folder contents to www-data group
-  become: yes
-  become_user: root
-  shell: chown -R www-data:www-data /var/www/html/redmine/ 
-  args:
-    executable: /bin/bash
+# - name: Chown folder contents to www-data group
+#   become: yes
+#   become_user: root
+#   shell: chown -R www-data:www-data /var/www/html/redmine/ 
+#   args:
+#     executable: /bin/bash
 
-- name: Chown folder contents to www-data group
-  become: yes
-  become_user: root
-  shell: chmod -R 0755 /var/www/html/redmine/
-  args:
-    executable: /bin/bash
+# - name: Chown folder contents to www-data group
+#   become: yes
+#   become_user: root
+#   shell: chmod -R 0755 /var/www/html/redmine/
+#   args:
+#     executable: /bin/bash
 
 - name: Copy Nginx Config File
   become: yes

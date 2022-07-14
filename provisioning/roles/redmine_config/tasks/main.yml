@@ -58,9 +58,13 @@
 
 - name: Create Gemfile.lock
   become: yes
+  become_user: root
   file: 
     path: "{{ redmine_path }}/Gemfile.lock"
     state: touch
+    owner: "{{ user_name }}"
+    group: "{{ group_name }}"
+    mode: 0644
   tags:
     - install_redmine
 
