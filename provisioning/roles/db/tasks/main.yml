@@ -22,7 +22,7 @@
 - name: Copy MYSQL Config File
   become: yes
   become_user: root 
-  copy:
+  template:
     src: templates/.my.cnf.j2
     dest: /root/.my.cnf
     owner: root

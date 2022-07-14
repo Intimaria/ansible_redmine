@@ -1,7 +1,7 @@
 - name:  Add Puma & Notify Gems In Gemfile.local
   become: yes
   become_user: root
-  copy:
+  template:
     src: templates/Gemfile.local.j2
     dest: "{{ redmine_path }}/Gemfile.local"
     owner: "{{ group_name }}"
@@ -41,7 +41,7 @@
 - name: Install Puma Service 
   become: yes
   become_user: root 
-  copy:
+  template:
     src: templates/puma.service.j2
     dest: /etc/systemd/system/puma.service
     owner: root

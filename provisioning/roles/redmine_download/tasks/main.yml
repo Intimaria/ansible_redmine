@@ -38,7 +38,7 @@
     - install_redmine
 
 - name: Copy DB Config File
-  copy:
+  template:
     src: templates/database.yml.j2
     dest: "{{ redmine_path }}/config/database.yml"
   tags: 
