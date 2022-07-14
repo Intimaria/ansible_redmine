@@ -17,8 +17,8 @@
     update_password: on_create
     generate_ssh_key: true
 
-- name: Set-up Redmine Sudo Access 
-  copy:
-    dest: /etc/sudoers.d/redmine
-    content: "redmine ALL=(ALL) NOPASSWD:ALL"
-    validate: "/usr/sbin/visudo -cf %s"
+# - name: Set-up Redmine Sudo Access 
+#   copy:
+#     dest: /etc/sudoers.d/redmine
+#     content: "redmine ALL=(ALL) NOPASSWD:ALL"
+#     validate: "/usr/sbin/visudo -cf %s"

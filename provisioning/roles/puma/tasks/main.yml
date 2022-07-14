@@ -1,8 +1,12 @@
 - name:  Add Puma & Notify Gems In Gemfile.local
   become: yes
+  become_user: root
   copy:
     src: templates/Gemfile.local.j2
     dest: "{{ redmine_path }}/Gemfile.local"
+    owner: "{{ group_name }}"
+    group: "{{ group_name }}"
+    mode: 0644
   tags: 
     - install_puma
 
@@ -16,11 +20,13 @@
 
 - name:  Copy Puma Config File
   become: yes
+  become_user: root
   copy:
     src: templates/puma.rb.j2
     dest: "{{ redmine_path }}/config/puma.rb"
     owner: "{{ group_name }}"
     group: "{{ group_name }}"
+    mode: 0644
   tags: 
     - install_puma
 

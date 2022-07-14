@@ -49,6 +49,7 @@
 
 - name: Source .bashrc
   become: yes
+  become_user: root
   shell: ". ~/.bashrc" 
   args: 
     executable: /bin/bash
