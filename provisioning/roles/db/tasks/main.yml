@@ -34,7 +34,7 @@
 
 - name: Remove Anonymous User Aaccounts
   become: yes
-  community.mysql.mysql_user:
+  mysql_user:
     name: ''
     host_all: yes
     state: absent
