@@ -45,7 +45,7 @@ Vagrantfile                 # Configuracion Vagrant Machine
 * Creacion de base de datos redmine & usuario de db redmine
 * Instalacion de rbenv para instalar versiones de Ruby
 * Instalacion de Ruby
-* Bajar Redmine en /srv/ o en /opt/ (variable global redmine_path) con permisos redmine
+* Bajar Redmine en /srv/ o en /opt/ (variable global redmine.path) con permisos redmine
 * Entrar al directorio redmine y correr bundle install
 * Configurar firewall / cerrar puertos 
 * Instalar Puma (agregar Gemfile, bundle & agregar Config)

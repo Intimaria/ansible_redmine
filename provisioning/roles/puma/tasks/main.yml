@@ -3,9 +3,9 @@
   become_user: root
   template:
     src: templates/Gemfile.local.j2
-    dest: "{{ redmine_path }}/Gemfile.local"
-    owner: "{{ group_name }}"
-    group: "{{ group_name }}"
+    dest: "{{ redmine.path }}/Gemfile.local"
+    owner: "{{ redmine.group.name }}" 
+    group: "{{ redmine.group.name }}"
     mode: 0644
   tags: 
     - install_puma
@@ -13,7 +13,7 @@
 - name: Bundle Install 
   shell: "~/.rbenv/shims/bundle install"
   args: 
-    chdir: "{{ redmine_path }}" 
+    chdir: "{{ redmine.path }}" 
     executable: /bin/bash
   tags:
     - install_puma 
@@ -23,9 +23,9 @@
   become_user: root
   copy:
     src: templates/puma.rb.j2
-    dest: "{{ redmine_path }}/config/puma.rb"
-    owner: "{{ group_name }}"
-    group: "{{ group_name }}"
+    dest: "{{ redmine.path }}/config/puma.rb"
+    owner: "{{ redmine.group.name }}"
+    group: "{{ redmine.group.name }}"
     mode: 0644
   tags: 
     - install_puma
@@ -68,7 +68,7 @@
 #   become_user: root
 #   shell: 'sudo ufw allow 3000/tcp'
 #   args:
-#     chdir: "{{ redmine_path }}"
+#     chdir: "{{ redmine.path }}"
 #     executable: /bin/bash
 #   tags:
 #     - web
@@ -83,7 +83,7 @@
 # - name: Run Puma Server
 #   shell: ' ~/.rbenv/shims/bundle exec puma -C config/puma.rb -e production'
 #   args:
-#     chdir: "{{ redmine_path }}"
+#     chdir: "{{ redmine.path }}"
 #     executable: /bin/bash
 #   when: server_up.rc == 1 
 #   tags:
@@ -94,7 +94,7 @@
 # - name: Run Test Server
 #   shell: ' ~/.rbenv/shims/bundle exec rails server -u webrick -e production -d'
 #   args:
-#     chdir: "{{ redmine_path }}"
+#     chdir: "{{ redmine.path }}"
 #     executable: /bin/bash
 #   when: server_up.rc == 1 
 #   tags:

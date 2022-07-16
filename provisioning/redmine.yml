@@ -15,7 +15,7 @@
 - name: Install Redmine
   hosts: all
   become: yes
-  become_user: "{{ user_name }}"
+  become_user: "{{ redmine.user.name }}"
   roles: 
     - rbenv # Install rbenv
     - redmine_download # Download Redmine & Copy DB config
