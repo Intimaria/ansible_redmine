@@ -21,7 +21,7 @@
 - name:  Copy Puma Config File
   become: yes
   become_user: root
-  copy:
+  template:
     src: templates/puma.rb.j2
     dest: "{{ redmine.path }}/config/puma.rb"
     owner: "{{ redmine.group.name }}"
